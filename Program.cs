@@ -9,7 +9,7 @@ int menu()
     int op;
     if (!int.TryParse(Console.ReadLine(), out op))
     {
-        return 0; // Invalid option
+        return 0; 
     }
     return op;
 }
@@ -26,19 +26,27 @@ void agregarEmpleado(int pos)
     empleados[pos].salario = double.Parse(Console.ReadLine()!);
     Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine("\nRegistro guardado satisfactoriamente");
-    Console.ResetColor();   
+    Console.ResetColor();
+
+    Console.WriteLine("\nPresiona una tecla para continuar...");
+    Console.ReadKey();
 }
  
-void mostrarEmpleados()
+void mostrarEmpleados(int pos)
 {
     Console.WriteLine("\nLista de empleados registrados:");
-    for (int i = 0; i < empleados.Length; i++)
+    for (int i = 0; i < pos; i++)
     {
         if (!string.IsNullOrEmpty(empleados[i].nombres))
         {
-            Console.WriteLine($"Empleado {i + 1}: {empleados[i].nombres} {empleados[i].apellidos}, Cargo: {empleados[i].cargo}, Salario: {empleados[i].salario}");
+            Console.WriteLine($"Empleado {i + 1}: {empleados[i].nombres} " +
+                $"{empleados[i].apellidos} \nCargo: {empleados[i].cargo}" +
+                $"\nSalario: {empleados[i].salario}\n");
         }
     }
+
+    Console.WriteLine("\nPresiona una tecla para continuar...");
+    Console.ReadKey();
 }
 
 void eliminarEmpleado()
@@ -68,7 +76,12 @@ void eliminarEmpleado()
         Console.WriteLine("\nNúmero inválido, por favor intente nuevamente");
         Console.ResetColor();
     }
+
+    Console.WriteLine("\nPresiona una tecla para volver al menú.");
+    Console.ReadKey();
 }
+
+
 
 int main() 
 {
@@ -76,7 +89,8 @@ int main()
 
     do
     {
-        Console.WriteLine("Registro de empleados");
+        Console.Clear();
+        Console.WriteLine("Registro de empleados\n=====================\n");
 
         op = menu();
         switch (op)
@@ -104,9 +118,6 @@ int main()
 
     return 0;
 }
-
-
-
 
 main();
 
