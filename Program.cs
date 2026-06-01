@@ -3,15 +3,18 @@ Empleado[] empleados = new Empleado[10];
 
 int menu()
 {
-    Console.WriteLine("1. Agregar empleado \n2. Mostrar empleados \n3. Guardar empleados " +
+    Console.Clear();
+    Console.ForegroundColor = ConsoleColor.Cyan;
+    Console.Write("1. Agregar empleado \n2. Mostrar empleados \n3. Guardar empleados " +
         "\n4. Salir \nEscriba su opción: ");
-
+    Console.ForegroundColor = ConsoleColor.Yellow;
     int op;
     if (!int.TryParse(Console.ReadLine(), out op))
     {
         return 0; 
     }
     Console.WriteLine();
+    Console.ResetColor();
     return op;
 }
 
@@ -35,7 +38,19 @@ void agregarEmpleado(int pos)
  
 void mostrarEmpleados(int pos)
 {
+    if (pos == 0)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("\nNo hay empleados registrados");
+        Console.ResetColor();
+        Console.WriteLine("\nPresiona una tecla para continuar...");
+        Console.ReadKey();
+        return;
+    }   
+
+    Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine("\nLista de empleados registrados:");
+    Console.ResetColor();
     for (int i = 0; i < pos; i++)
     {
         if (!string.IsNullOrEmpty(empleados[i].nombres))
@@ -53,7 +68,7 @@ void mostrarEmpleados(int pos)
 
 void guardarDatos(int pos)
 {
-    StreamWriter archivo = new StreamWriter("empleados.csv");
+    StreamWriter archivo = new StreamWriter("C:\\Users\\danni\\OneDrive\\Documents\\UAM\\Introduccion_a_la_Programacion\\empleados.csv");
     for (int i = 0; i < pos; i++)
     {
         if (!string.IsNullOrEmpty(empleados[i].nombres))
@@ -64,9 +79,13 @@ void guardarDatos(int pos)
                 $"; {empleados[i].salario}");
         }
     }
+    archivo.Close();
     Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine("\nRegistros guardados satisfactoriamente");
     Console.ResetColor();
+    Console.WriteLine("\nPresiona una tecla para continuar...");
+    Console.ReadKey();
+
 }
 
 int main() 
