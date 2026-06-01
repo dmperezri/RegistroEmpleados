@@ -3,7 +3,7 @@ Empleado[] empleados = new Empleado[10];
 
 int menu()
 {
-    Console.WriteLine("1. Agregar empleado \n2. Mostrar empleados \n3. Eliminar empleado " +
+    Console.WriteLine("1. Agregar empleado \n2. Mostrar empleados \n3. Guardar empleados " +
         "\n4. Salir \nEscriba su opción: ");
 
     int op;
@@ -11,6 +11,7 @@ int menu()
     {
         return 0; 
     }
+    Console.WriteLine();
     return op;
 }
 
@@ -39,7 +40,7 @@ void mostrarEmpleados(int pos)
     {
         if (!string.IsNullOrEmpty(empleados[i].nombres))
         {
-            Console.WriteLine($"Empleado {i + 1}: {empleados[i].nombres} " +
+            Console.WriteLine($"Empleado [{i + 1}]: \n{empleados[i].nombres} " +
                 $"{empleados[i].apellidos} \nCargo: {empleados[i].cargo}" +
                 $"\nSalario: {empleados[i].salario}\n");
         }
@@ -49,39 +50,24 @@ void mostrarEmpleados(int pos)
     Console.ReadKey();
 }
 
-void eliminarEmpleado()
+
+void guardarDatos(int pos)
 {
-    Console.Write("\nIngrese el número del empleado a eliminar: ");
-    int num;
-    if (int.TryParse(Console.ReadLine(), out num) && num > 0 && num <= empleados.Length)
+    StreamWriter archivo = new StreamWriter("empleados.csv");
+    for (int i = 0; i < pos; i++)
     {
-        int index = num - 1;
-        if (!string.IsNullOrEmpty(empleados[index].nombres))
+        if (!string.IsNullOrEmpty(empleados[i].nombres))
         {
-            empleados[index] = new Empleado(); // Reset the employee record
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\nEmpleado eliminado satisfactoriamente");
-            Console.ResetColor();
-        }
-        else
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nNo existe un empleado registrado en esa posición");
-            Console.ResetColor();
+            archivo.WriteLine($"{empleados[i].nombres}" +
+                $"; {empleados[i].apellidos}" +
+                $"; {empleados[i].cargo}" +
+                $"; {empleados[i].salario}");
         }
     }
-    else
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("\nNúmero inválido, por favor intente nuevamente");
-        Console.ResetColor();
-    }
-
-    Console.WriteLine("\nPresiona una tecla para volver al menú.");
-    Console.ReadKey();
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine("\nRegistros guardados satisfactoriamente");
+    Console.ResetColor();
 }
-
-
 
 int main() 
 {
@@ -99,10 +85,10 @@ int main()
                 agregarEmpleado(i++);
                 break;
             case 2:
-                mostrarEmpleados();
+                mostrarEmpleados(i);
                 break;
             case 3:
-                eliminarEmpleado();
+                guardarDatos(i);
                 break;
             case 4:
                 Console.WriteLine("\nSaliendo del programa...");
