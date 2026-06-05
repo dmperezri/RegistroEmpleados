@@ -90,9 +90,51 @@ void guardarDatos(int pos)
 
 }
 
+int cargarDatos()
+{
+    int i = 0;
+
+    if (File.Exists("C:\\Users\\danni\\OneDrive\\Documents\\UAM\\Introduccion_a_la_Programacion\\empleados.csv"))
+    {
+        StreamReader archivo = new StreamReader("C:\\Users\\danni\\OneDrive\\Documents\\UAM\\Introduccion_a_la_Programacion\\empleados.csv");
+        string linea;
+
+        while ((linea = archivo.ReadLine()!) != null && i < 10)
+        {
+            string[] datos = linea.Split(';');
+
+            if (datos.Length == 4) 
+            {
+                empleados[i].nombres = datos[0].Trim();
+                empleados[i].apellidos = datos[1].Trim();
+                empleados[i].cargo = datos[2].Trim();
+                empleados[i].salario = double.Parse(datos[3].Trim());
+                i++;
+            }
+        }
+        archivo.Close();
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"\nSe cargaron {i} empleados del archivo.");
+        Console.ResetColor();
+    }
+    else
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("\nNo se encontró un archivo previo. Iniciando con lista vacía.");
+        Console.ResetColor();
+    }
+
+    Thread.Sleep(2000); 
+    return i; 
+}
+
 int main() 
 {
     int op = 0, i = 0;
+
+    Console.Clear();
+    Console.Write("Cargando base de datos... ");
+    i = cargarDatos();
 
     Console.Write("Cargando...");
     for (int j = 0; j < 10; j++)
@@ -110,7 +152,17 @@ int main()
         switch (op)
         {
             case 1:
-                agregarEmpleado(i++);
+                if (i < 10)
+                {
+                    agregarEmpleado(i++);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nEl registro está lleno (máximo 10 empleados).");
+                    Console.ResetColor();
+                    Console.ReadKey();
+                }
                 break;
             case 2:
                 mostrarEmpleados(i);
